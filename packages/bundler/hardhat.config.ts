@@ -38,7 +38,11 @@ const config: HardhatUserConfig = {
       url: 'http://localhost:8545/',
       saveDeployments: false
     },
-    goerli: getInfuraNetwork('goerli')
+    goerli: getInfuraNetwork('goerli'),
+    Scroll_Alpha_Testnet: {
+      url: 'https://alpha-rpc.scroll.io/l2',
+      saveDeployments: false
+    }
   },
   solidity: {
     version: '0.8.15',

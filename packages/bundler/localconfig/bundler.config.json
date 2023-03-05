@@ -1,9 +1,9 @@
 {
   "gasFactor": "1",
   "port": "3000",
-  "network": "http://localhost:8545",
-  "entryPoint": "0x0576a174D229E3cFA37253523E645A78A0C91B57",
-  "beneficiary": "0xd21934eD8eAf27a67f0A70042Af50A1D6d195E81",
+  "network": "https://alpha-rpc.scroll.io/l2",
+  "entryPoint": "0x630f191C6b8738ca24cA39A75C9EcE5445e21Ed1",
+  "beneficiary": "0x832946E630142c9E801B49C6186bCe7d3bF50ABe",
   "minBalance": "1",
   "mnemonic": "./localconfig/mnemonic.txt",
   "maxBundleGas": 5e6,

@@ -74,6 +74,7 @@ export async function runBundler (argv: string[], overrideExit = true): Promise<
   const programOpts = program.parse(argv).opts()
   showStackTraces = programOpts.showStackTraces
 
+  
   console.log('command-line arguments: ', program.opts())
 
   const { config, provider, wallet } = await resolveConfiguration(programOpts)

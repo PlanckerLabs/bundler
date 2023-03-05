@@ -7,6 +7,7 @@ packages/bundler/src/typechain-types
 cache
 artifacts
 .DS_Store
+.txt
 /.idea/bundler.iml
 /.idea/modules.xml
 /packages/bundler/tsconfig.tsbuildinfo

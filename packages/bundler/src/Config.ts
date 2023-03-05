@@ -37,11 +37,11 @@ export async function resolveConfiguration (programOpts: any): Promise<{ config:
     ? require('hardhat').ethers.provider
     : ethers.getDefaultProvider(config.network)
 
-  let mnemonic: string
+  let privateKey: string
   let wallet: Wallet
   try {
-    mnemonic = fs.readFileSync(config.mnemonic, 'ascii').trim()
-    wallet = Wallet.fromMnemonic(mnemonic).connect(provider)
+    privateKey = fs.readFileSync(config.mnemonic, 'ascii').trim()
+    wallet = new Wallet(privateKey, provider)
   } catch (e: any) {
     throw new Error(`Unable to read --mnemonic ${config.mnemonic}: ${e.message as string}`)
   }

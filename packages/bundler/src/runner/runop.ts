@@ -47,21 +47,21 @@ class Runner {
     const net = await this.provider.getNetwork()
     const chainId = net.chainId
     const dep = new DeterministicDeployer(this.provider)
-    const accountDeployer = await DeterministicDeployer.getAddress(new SimpleAccountFactory__factory(), 0, [this.entryPointAddress])
-    // const accountDeployer = await new SimpleAccountFactory__factory(this.provider.getSigner()).deploy().then(d=>d.address)
-    if (!await dep.isContractDeployed(accountDeployer)) {
-      if (deploymentSigner == null) {
-        console.log(`AccountDeployer not deployed at ${accountDeployer}. run with --deployFactory`)
-        process.exit(1)
-      }
-      const dep1 = new DeterministicDeployer(deploymentSigner.provider as any)
-      await dep1.deterministicDeploy(new SimpleAccountFactory__factory(), 0, [this.entryPointAddress])
-    }
+    // const accountDeployer = await DeterministicDeployer.getAddress(new SimpleAccountFactory__factory(), 0, [this.entryPointAddress])
+    // // const accountDeployer = await new SimpleAccountFactory__factory(this.provider.getSigner()).deploy().then(d=>d.address)
+    // if (!await dep.isContractDeployed(accountDeployer)) {
+    //   if (deploymentSigner == null) {
+    //     console.log(`AccountDeployer not deployed at ${accountDeployer}. run with --deployFactory`)
+    //     process.exit(1)
+    //   }
+    //   const dep1 = new DeterministicDeployer(deploymentSigner.provider as any)
+    //   await dep1.deterministicDeploy(new SimpleAccountFactory__factory(), 0, [this.entryPointAddress])
+    // }
     this.bundlerProvider = new HttpRpcClient(this.bundlerUrl, this.entryPointAddress, chainId)
     this.accountApi = new SimpleAccountAPI({
       provider: this.provider,
       entryPointAddress: this.entryPointAddress,
-      factoryAddress: accountDeployer,
+      // factoryAddress: accountDeployer,
       owner: this.accountOwner,
       index: this.index,
       overheads: {
