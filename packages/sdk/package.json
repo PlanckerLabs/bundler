@@ -1,5 +1,5 @@
 {
-  "name": "@account-abstraction/sdk",
+  "name": "@recursion/sdk",
   "version": "0.5.0",
   "main": "./dist/src/index.js",
   "license": "MIT",
