@@ -5,7 +5,7 @@ import { BundlerReputationParams, ReputationManager } from '../src/modules/Reput
 import { UserOperation } from '../src/modules/moduleUtils'
 import { AddressZero } from '@account-abstraction/utils'
 import { isGeth } from '../src/utils'
-import { DeterministicDeployer } from '@account-abstraction/sdk'
+import { DeterministicDeployer } from '@recursion/sdk'
 import { MempoolManager } from '../src/modules/MempoolManager'
 import { BundleManager } from '../src/modules/BundleManager'
 import { ethers } from 'hardhat'

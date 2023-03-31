@@ -11,7 +11,7 @@ import {
 } from '@account-abstraction/contracts'
 
 import { Signer, Wallet } from 'ethers'
-import { DeterministicDeployer, SimpleAccountAPI } from '@account-abstraction/sdk'
+import { DeterministicDeployer, SimpleAccountAPI } from '@recursion/sdk'
 import { postExecutionDump } from '@account-abstraction/utils/dist/src/postExecCheck'
 import {
   SampleRecipient, TestRuleAccount, TestOpcodesAccount__factory

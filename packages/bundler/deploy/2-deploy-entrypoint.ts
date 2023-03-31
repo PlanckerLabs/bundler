@@ -1,7 +1,7 @@
 import { HardhatRuntimeEnvironment } from 'hardhat/types'
 import { DeployFunction } from 'hardhat-deploy/types'
 import { ethers } from 'hardhat'
-import { DeterministicDeployer } from '@account-abstraction/sdk'
+import { DeterministicDeployer } from '@recursion/sdk'
 import { EntryPoint__factory } from '@account-abstraction/contracts'
 
 // deploy entrypoint - but only on debug network..

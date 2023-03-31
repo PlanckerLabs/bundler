@@ -39,7 +39,7 @@ This can only work for wallets that use an EIP-191 ("Ethereum Signed Message") s
 Also, the UX is not great (the user is asked to sign a hash, and even the wallet address is not mentioned, only the signer)
 
 ```typescript
-import { wrapProvider } from '@account-abstraction/sdk'
+import { wrapProvider } from '@recursion/sdk'
 
 //use this account as wallet-owner (which will be used to sign the requests)
 const aaSigner = provider.getSigner()
