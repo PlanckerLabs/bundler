@@ -78,11 +78,18 @@ export class BundleManager {
   async sendBundle (userOps: UserOperation[], beneficiary: string, storageMap: StorageMap): Promise<SendBundleReturn | undefined> {
     try {
       const feeData = await this.provider.getFeeData()
+      // maxPriorityFeePerGas always returns 1500000000
+      let maxPriorityFeePerGas = feeData.maxPriorityFeePerGas ?? 0
+      //if polygon mainnet
+      if (this.provider._network.chainId == 137) {
+        // TODO: Optimize gas calculation.
+        maxPriorityFeePerGas = 30000000000
+      }
       const tx = await this.entryPoint.populateTransaction.handleOps(userOps, beneficiary, {
         type: 2,
         nonce: await this.signer.getTransactionCount(),
         gasLimit: 10e6,
-        maxPriorityFeePerGas: feeData.maxPriorityFeePerGas ?? 0,
+        maxPriorityFeePerGas: maxPriorityFeePerGas,
         maxFeePerGas: feeData.maxFeePerGas ?? 0
       })
       tx.chainId = this.provider._network.chainId
@@ -114,7 +121,12 @@ export class BundleManager {
         parsedError = this.entryPoint.interface.parseError((e.data?.data ?? e.data))
       } catch (e1) {
         this.checkFatal(e)
-        console.warn('Failed handleOps, but non-FailedOp error', e)
+        if (e.body && e.body.toString().indexOf('32000') && e.body.toString().indexOf('transaction underpriced')) {
+          // TODO: Try to adjust the gas policy.
+          console.warn('server errors', e.body)
+        } else {
+          console.warn('Failed handleOps, but non-FailedOp error', e)
+        }
         return
       }
       const {
