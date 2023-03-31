@@ -74,7 +74,7 @@ export class BundlerServer {
     // await EntryPoint__factory.connect(this.config.entryPoint,this.provider).callStatic.addStake(0)
     const err = await EntryPoint__factory.connect(this.config.entryPoint, this.provider).callStatic.simulateValidation(emptyUserOp)
       .catch(e => e)
-    if (err?.errorName !== 'FailedOp') {
+    if (err?.errorName && err?.errorName !== 'FailedOp') {
       this.fatal(`Invalid entryPoint contract at ${this.config.entryPoint}. wrong version?`)
     }
     const bal = await this.provider.getBalance(this.wallet.address)
