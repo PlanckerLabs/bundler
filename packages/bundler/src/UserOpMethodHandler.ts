@@ -6,7 +6,7 @@ import { resolveProperties } from 'ethers/lib/utils'
 import { deepHexlify, erc4337RuntimeVersion } from '@account-abstraction/utils'
 import { UserOperationStruct, EntryPoint } from '@account-abstraction/contracts'
 import { UserOperationEventEvent } from '@account-abstraction/contracts/dist/types/EntryPoint'
-import { calcPreVerificationGas } from '@recursion/sdk'
+import { unifiedCalcPreVerificationGas } from '@recursion/sdk'
 import { requireCond, RpcError, tostr } from './utils'
 import { ExecutionManager } from './modules/ExecutionManager'
 import { getAddr } from './modules/moduleUtils'
@@ -143,7 +143,7 @@ export class UserOpMethodHandler {
     if (validAfter === BigNumber.from(0)) {
       validAfter = undefined
     }
-    const preVerificationGas = calcPreVerificationGas(userOp)
+    const preVerificationGas = await unifiedCalcPreVerificationGas(userOp, this.provider)
     const verificationGas = BigNumber.from(preOpGas).toNumber()
     return {
       preVerificationGas,

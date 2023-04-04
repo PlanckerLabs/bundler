@@ -9,7 +9,8 @@ import { TransactionDetailsForUserOp } from './TransactionDetailsForUserOp'
 import { resolveProperties } from 'ethers/lib/utils'
 import { PaymasterAPI } from './PaymasterAPI'
 import { getUserOpHash, NotPromise, packUserOp } from '@account-abstraction/utils'
-import { calcPreVerificationGas, GasOverheads } from './calcPreVerificationGas'
+import { unifiedCalcPreVerificationGas, GasOverheads } from './calcPreVerificationGas'
+
 
 export interface BaseApiParams {
   provider: Provider
@@ -156,7 +157,7 @@ export abstract class BaseAccountAPI {
    */
   async getPreVerificationGas (userOp: Partial<UserOperationStruct>): Promise<number> {
     const p = await resolveProperties(userOp)
-    return calcPreVerificationGas(p, this.overheads)
+    return ethers.BigNumber.from(await unifiedCalcPreVerificationGas(p, this.provider, this.overheads)).mul(105).div(100).toNumber()
   }
 
   /**

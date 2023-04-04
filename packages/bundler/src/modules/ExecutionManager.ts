@@ -34,7 +34,7 @@ export class ExecutionManager {
   async sendUserOperation (userOp: UserOperation, entryPointInput: string): Promise<void> {
     await this.mutex.runExclusive(async () => {
       debug('sendUserOperation')
-      this.validationManager.validateInputParameters(userOp, entryPointInput)
+      await this.validationManager.validateInputParameters(userOp, entryPointInput)
       const validationResult = await this.validationManager.validateUserOp(userOp, undefined)
       const userOpHash = await this.validationManager.entryPoint.getUserOpHash(userOp)
       this.mempoolManager.addUserOp(userOp,
