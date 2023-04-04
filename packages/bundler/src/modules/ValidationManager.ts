@@ -3,7 +3,7 @@ import { ReputationManager } from './ReputationManager'
 import { BigNumber, BigNumberish, BytesLike, ethers } from 'ethers'
 import { requireCond, RpcError } from '../utils'
 import { AddressZero, decodeErrorReason } from '@account-abstraction/utils'
-import { calcPreVerificationGas } from '@recursion/sdk'
+import { unifiedCalcPreVerificationGas } from '@recursion/sdk'
 import { parseScannerResult } from '../parseScannerResult'
 import { JsonRpcProvider } from '@ethersproject/providers'
 import { BundlerCollectorReturn, bundlerCollectorTracer, ExitInfo } from '../BundlerCollectorTracer'
@@ -238,7 +238,7 @@ export class ValidationManager {
    * @param requireSignature
    * @param requireGasParams
    */
-  validateInputParameters (userOp: UserOperation, entryPointInput: string, requireSignature = true, requireGasParams = true): void {
+  async validateInputParameters (userOp: UserOperation, entryPointInput: string, requireSignature = true, requireGasParams = true): Promise<void> {
     requireCond(entryPointInput != null, 'No entryPoint param', ValidationErrors.InvalidFields)
     requireCond(entryPointInput.toLowerCase() === this.entryPoint.address.toLowerCase(),
       `The EntryPoint at "${entryPointInput}" is not supported. This bundler uses ${this.entryPoint.address}`,
@@ -272,8 +272,7 @@ export class ValidationManager {
     requireCond(userOp.initCode.length === 2 || userOp.initCode.length >= 42,
       'initCode: must contain at least an address',
       ValidationErrors.InvalidFields)
-
-    const calcPreVerificationGas1 = calcPreVerificationGas(userOp)
+    const calcPreVerificationGas1 = await unifiedCalcPreVerificationGas(userOp, this.entryPoint.provider)
     requireCond(userOp.preVerificationGas >= calcPreVerificationGas1,
       `preVerificationGas too low: expected at least ${calcPreVerificationGas1}`,
       ValidationErrors.InvalidFields)
