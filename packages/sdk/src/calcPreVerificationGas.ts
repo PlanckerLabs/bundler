@@ -1,7 +1,7 @@
 import { UserOperationStruct } from '@account-abstraction/contracts'
 import { NotPromise, packUserOp } from '@account-abstraction/utils'
 import { arrayify, hexlify } from 'ethers/lib/utils'
-import { asL2Provider } from '@eth-optimism/sdk'
+const asL2Provider = require('@eth-optimism/sdk');
 import { ethers } from 'ethers'
 import { Provider } from '@ethersproject/providers'
 import { ArbGasInfo__factory } from "@arbitrum/sdk/dist/lib/abi/factories/ArbGasInfo__factory";
