@@ -1,7 +1,7 @@
 import { UserOperationStruct } from '@account-abstraction/contracts'
 import { NotPromise, packUserOp } from '@account-abstraction/utils'
 import { arrayify, hexlify } from 'ethers/lib/utils'
-const asL2Provider = require('@eth-optimism/sdk');
+const optimismSDK = require('@eth-optimism/sdk');
 import { ethers } from 'ethers'
 import { Provider } from '@ethersproject/providers'
 import { ArbGasInfo__factory } from "@arbitrum/sdk/dist/lib/abi/factories/ArbGasInfo__factory";
@@ -113,7 +113,7 @@ export async function unifiedCalcPreVerificationGas (userOp: Partial<NotPromise<
 
 export async function calcL1GasOnOptimism(userOp: Partial<NotPromise<UserOperationStruct>>, provider: Provider): Promise<number> {
  
-    const l2RpcProvider = asL2Provider(provider)
+    const l2RpcProvider = optimismSDK.asL2Provider(provider)
     const l1BaseGasPrice = await l2RpcProvider.getL1GasPrice()
     const l2BasGasPrice = await provider.getGasPrice()
 
