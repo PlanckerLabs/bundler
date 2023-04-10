@@ -115,11 +115,10 @@ export async function calcL1GasOnOptimism(userOp: Partial<NotPromise<UserOperati
  
     const l2RpcProvider = optimismSDK.asL2Provider(provider)
     const l1BaseGasPrice = await l2RpcProvider.getL1GasPrice()
-    const l2BasGasPrice = await provider.getGasPrice()
+    const l2BaseGasPrice = await provider.getGasPrice()
 
-    const gasOnL1 = calcCalldataConsumedGasOnL1(userOp)
-    const extraPreverificationGas = ethers.BigNumber.from(gasOnL1).mul(l1BaseGasPrice).div(l2BasGasPrice)
-    debug("l1 gas price = ", l1BaseGasPrice, "l2 gas price =", l2BasGasPrice, "gas consumed on L1 =", gasOnL1, "extraPreverificationGas =", extraPreverificationGas)
+    const gasOnL1 = calL1GasOnOptimism(userOp)
+    const extraPreverificationGas = ethers.BigNumber.from(gasOnL1).mul(l1BaseGasPrice).div(l2BaseGasPrice)
     return extraPreverificationGas.toNumber()
 }
 
@@ -142,23 +141,22 @@ export async function calcL1GasOnArbitrum(userOp: Partial<NotPromise<UserOperati
   } as any
 
   const packed = arrayify(packUserOp(p, false))
-  const userOpSize = 140 + ethers.utils.hexDataLength(packed);
-
+  const userOpSize = ethers.utils.hexDataLength(packed);
   const feeOnL1 = l1GasPricePerByte.mul(userOpSize)
   const extraPreverificationGas = feeOnL1.div(l2GasPrice)
-  debug("l1GasPricePerByte = ", l1GasPricePerByte, "l2 gas price = ", l2GasPrice, "gas consumed on L1 = ", feeOnL1, "extraPreverificationGas = ", extraPreverificationGas)
   return extraPreverificationGas.toNumber()
 }
 
-export function calcCalldataConsumedGasOnL1 (userOp: Partial<NotPromise<UserOperationStruct>>): number {
+export function calL1GasOnOptimism (userOp: Partial<NotPromise<UserOperationStruct>>): number {
   const ov = { 
     fixed: 2100,
-    perUserOp: 0,
-    perUserOpWord: 4,
+   // perUserOp: 0,
+    // perUserOpWord: 4,
     zeroByte: 4,
     nonZeroByte: 16,
-    bundleSize: 1,
-    sigSize: 65}
+   // bundleSize: 1,
+    sigSize: 65,
+    factor: 1}
   const p: NotPromise<UserOperationStruct> = {
     // dummy values, in case the UserOp is incomplete.
     preVerificationGas: 21000, // dummy value, just for calldata cost
@@ -167,13 +165,13 @@ export function calcCalldataConsumedGasOnL1 (userOp: Partial<NotPromise<UserOper
   } as any
 
   const packed = arrayify(packUserOp(p, false))
-  const lengthInWord = (packed.length + 31) / 32
+  //const lengthInWord = (packed.length + 31) / 32
   const callDataCost = packed.map(x => x === 0 ? ov.zeroByte : ov.nonZeroByte).reduce((sum, x) => sum + x)
-  const ret = Math.round(
+  const ret = Math.round(ov.factor * (
     callDataCost +
-    ov.fixed / ov.bundleSize +
-    ov.perUserOp +
-    ov.perUserOpWord * lengthInWord
-  )
+    ov.fixed // +
+   // ov.perUserOp
+  //  ov.perUserOpWord * lengthInWord
+  ))
   return ret
 }
