@@ -273,7 +273,7 @@ export class ValidationManager {
       'initCode: must contain at least an address',
       ValidationErrors.InvalidFields)
     const calcPreVerificationGas1 = await unifiedCalcPreVerificationGas(userOp, this.entryPoint.provider)
-    requireCond(userOp.preVerificationGas >= calcPreVerificationGas1,
+    requireCond(BigNumber.from(userOp.preVerificationGas).toNumber() >= calcPreVerificationGas1,
       `preVerificationGas too low: expected at least ${calcPreVerificationGas1}`,
       ValidationErrors.InvalidFields)
   }
